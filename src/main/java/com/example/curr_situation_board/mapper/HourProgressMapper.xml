@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.curr_situation_board.mapper.HourProgressMapper">
+    <select id="findHourProgressGy" resultType="com.example.curr_situation_board.vo.HourProgressVo">
+        SELECT iv1.STEP AS 'step', iv1.${building} AS 'plan' , iv2.${building} AS 'real_plan', iv3.${building} AS 'act',
+        (iv3.${building}-iv2.${building}) AS 'gap',iv4.${building} AS 'gy',iv5.${building} AS 'DAY',iv6.${building} AS 'sw',
+        iv7.${building} AS 'h1',iv8.${building} AS 'h2',iv9.${building} AS 'h3',iv10.${building} AS 'h4',iv11.${building} AS 'h5',
+        iv12.${building} AS 'h6', iv13.${building} AS 'h7',iv14.${building} AS 'h8'
+        FROM ioc_view iv1, ioc_view iv2, ioc_view iv3, ioc_view iv4, ioc_view iv5,ioc_view iv6,ioc_view iv7,ioc_view iv8,ioc_view iv9,ioc_view iv10,
+        ioc_view iv11,ioc_view iv12,ioc_view iv13,ioc_view iv14
+        WHERE iv1.`TYPE` = '目标' AND iv2.`TYPE` ='当前时间' AND iv2.TYPE2 ='计划'
+        AND iv3.`TYPE` = '当前时间' AND iv3.TYPE2 = '实绩'
+        AND iv4.TYPE = 'G/Y' AND iv4.TYPE2 = 'ACT'
+        AND iv5.TYPE = 'DAY' AND iv5.TYPE2 = 'ACT'
+        AND iv6.TYPE = 'S/W' AND iv6.TYPE2 = 'PLAN'
+        AND iv7.TYPE = 'G/Y' AND iv7.TYPE2 = '22~23'
+        AND iv8.TYPE = 'G/Y' AND iv8.TYPE2 = '23~00'
+        AND iv9.TYPE = 'G/Y' AND iv9.TYPE2 = '00~01'
+        AND iv10.TYPE = 'G/Y' AND iv10.TYPE2 = '01~02'
+        AND iv11.TYPE = 'G/Y' AND iv11.TYPE2 = '02~03'
+        AND iv12.TYPE = 'G/Y' AND iv12.TYPE2 = '03~04'
+        AND iv13.TYPE = 'G/Y' AND iv13.TYPE2 = '04~05'
+        AND iv14.TYPE = 'G/Y' AND iv14.TYPE2 = '05~06'
+        AND iv1.STEP = iv2.STEP AND iv2.STEP = iv3.STEP AND iv3.STEP = iv4.STEP  AND iv4.STEP = iv5.STEP AND iv5.STEP = iv6.STEP AND iv6.STEP = iv7.				STEP AND iv7.STEP = iv8.STEP AND iv8.STEP = iv9.STEP AND iv9.STEP = iv10.STEP AND iv10.STEP = iv11.STEP AND iv11.STEP = iv12.STEP
+        AND iv12.STEP = iv13.STEP AND iv13.STEP = iv14.STEP
+    </select>
+
+    <select id="findHourProgressDay" resultType="com.example.curr_situation_board.vo.HourProgressVo">
+        SELECT iv1.STEP AS 'step', iv1.${building} AS 'plan' , iv2.${building} AS 'real_plan', iv3.${building} AS 'act',
+        (iv3.${building}-iv2.${building}) AS 'gap',iv4.${building} AS 'gy',iv5.${building} AS 'DAY',iv6.${building} AS 'sw',
+        iv7.${building} AS 'h1',iv8.${building} AS 'h2',iv9.${building} AS 'h3',iv10.${building} AS 'h4',iv11.${building} AS 'h5',
+        iv12.${building} AS 'h6', iv13.${building} AS 'h7',iv14.${building} AS 'h8'
+        FROM ioc_view iv1, ioc_view iv2, ioc_view iv3, ioc_view iv4, ioc_view iv5,ioc_view iv6,ioc_view iv7,ioc_view iv8,ioc_view iv9,ioc_view iv10,
+        ioc_view iv11,ioc_view iv12,ioc_view iv13,ioc_view iv14
+        WHERE iv1.`TYPE` = '目标' AND iv2.`TYPE` ='当前时间' AND iv2.TYPE2 ='计划'
+        AND iv3.`TYPE` = '当前时间' AND iv3.TYPE2 = '实绩'
+        AND iv4.TYPE = 'G/Y' AND iv4.TYPE2 = 'ACT'
+        AND iv5.TYPE = 'DAY' AND iv5.TYPE2 = 'ACT'
+        AND iv6.TYPE = 'S/W' AND iv6.TYPE2 = 'PLAN'
+        AND iv7.TYPE = 'DAY' AND iv7.TYPE2 = '06~07'
+        AND iv8.TYPE = 'DAY' AND iv8.TYPE2 = '07~08'
+        AND iv9.TYPE = 'DAY' AND iv9.TYPE2 = '08~09'
+        AND iv10.TYPE = 'DAY' AND iv10.TYPE2 = '09~10'
+        AND iv11.TYPE = 'DAY' AND iv11.TYPE2 = '10~11'
+        AND iv12.TYPE = 'DAY' AND iv12.TYPE2 = '11~12'
+        AND iv13.TYPE = 'DAY' AND iv13.TYPE2 = '12~13'
+        AND iv14.TYPE = 'DAY' AND iv14.TYPE2 = '13~14'
+        AND iv1.STEP = iv2.STEP AND iv2.STEP = iv3.STEP AND iv3.STEP = iv4.STEP  AND iv4.STEP = iv5.STEP AND iv5.STEP = iv6.STEP AND iv6.STEP = iv7.				STEP AND iv7.STEP = iv8.STEP AND iv8.STEP = iv9.STEP AND iv9.STEP = iv10.STEP AND iv10.STEP = iv11.STEP AND iv11.STEP = iv12.STEP
+        AND iv12.STEP = iv13.STEP AND iv13.STEP = iv14.STEP
+    </select>
+
+    <select id="findHourProgressSw" resultType="com.example.curr_situation_board.vo.HourProgressVo">
+        SELECT iv1.STEP AS 'step', iv1.${building} AS 'plan' , iv2.${building} AS 'real_plan', iv3.${building} AS 'act',
+        (iv3.${building}-iv2.${building}) AS 'gap',iv4.${building} AS 'gy',iv5.${building} AS 'DAY',iv6.${building} AS 'sw',
+        iv7.${building} AS 'h1',iv8.${building} AS 'h2',iv9.${building} AS 'h3',iv10.${building} AS 'h4',iv11.${building} AS 'h5',
+        iv12.${building} AS 'h6', iv13.${building} AS 'h7',iv14.${building} AS 'h8'
+        FROM ioc_view iv1, ioc_view iv2, ioc_view iv3, ioc_view iv4, ioc_view iv5,ioc_view iv6,ioc_view iv7,ioc_view iv8,ioc_view iv9,ioc_view iv10,
+        ioc_view iv11,ioc_view iv12,ioc_view iv13,ioc_view iv14
+        WHERE iv1.`TYPE` = '目标' AND iv2.`TYPE` ='当前时间' AND iv2.TYPE2 ='计划'
+        AND iv3.`TYPE` = '当前时间' AND iv3.TYPE2 = '实绩'
+        AND iv4.TYPE = 'G/Y' AND iv4.TYPE2 = 'ACT'
+        AND iv5.TYPE = 'DAY' AND iv5.TYPE2 = 'ACT'
+        AND iv6.TYPE = 'S/W' AND iv6.TYPE2 = 'PLAN'
+        AND iv7.TYPE = 'S/W' AND iv7.TYPE2 = '14~15'
+        AND iv8.TYPE = 'S/W' AND iv8.TYPE2 = '15~16'
+        AND iv9.TYPE = 'S/W' AND iv9.TYPE2 = '16~17'
+        AND iv10.TYPE = 'S/W' AND iv10.TYPE2 = '17~18'
+        AND iv11.TYPE = 'S/W' AND iv11.TYPE2 = '18~19'
+        AND iv12.TYPE = 'S/W' AND iv12.TYPE2 = '19~20'
+        AND iv13.TYPE = 'S/W' AND iv13.TYPE2 = '20~21'
+        AND iv14.TYPE = 'S/W' AND iv14.TYPE2 = '21~22'
+        AND iv1.STEP = iv2.STEP AND iv2.STEP = iv3.STEP AND iv3.STEP = iv4.STEP  AND iv4.STEP = iv5.STEP AND iv5.STEP = iv6.STEP AND iv6.STEP = iv7.				STEP AND iv7.STEP = iv8.STEP AND iv8.STEP = iv9.STEP AND iv9.STEP = iv10.STEP AND iv10.STEP = iv11.STEP AND iv11.STEP = iv12.STEP
+        AND iv12.STEP = iv13.STEP AND iv13.STEP = iv14.STEP
+    </select>
+</mapper>

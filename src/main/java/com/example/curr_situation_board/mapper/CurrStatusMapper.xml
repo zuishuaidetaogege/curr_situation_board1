@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.curr_situation_board.mapper.CurrStatusMapper">
+    <select id="findCurrStatus" resultType="com.example.curr_situation_board.vo.CurrStatusVo">
+        select RW_TTL+W2_BANK as TTL,CP+CP_B_LINE+OLB as CP_OLB,
+               SM020PG as PG,SM020BZ as BZ,MT+MT_RETEST as MT,LCM_PACK as L_PACK,
+               LCM_BANK as L_BANK,W2_BANK,RW_TTL as RW
+        from curr_situation
+        where PROCESSID = #{building}
+    </select>
+</mapper>

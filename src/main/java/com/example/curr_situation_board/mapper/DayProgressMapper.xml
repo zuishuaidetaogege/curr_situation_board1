@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.curr_situation_board.mapper.DayProgressMapper">
+    <select id="findDayProgress" resultType="com.example.curr_situation_board.vo.DayProgressVo">
+        SELECT iv1.STEP AS 'step', iv1.${building} AS 'plan' , iv2.${building} AS 'real_plan', iv3.${building} AS 'act'
+        FROM ioc_view iv1, ioc_view iv2, ioc_view iv3
+        WHERE iv1.`TYPE` = '目标' AND iv2.`TYPE` ='当前时间' AND iv2.TYPE2 ='计划'
+        AND iv3.`TYPE` = '当前时间' AND iv3.TYPE2 = '实绩'
+        AND iv1.STEP = iv2.STEP AND iv2.STEP = iv3.STEP;
+    </select>
+</mapper>
