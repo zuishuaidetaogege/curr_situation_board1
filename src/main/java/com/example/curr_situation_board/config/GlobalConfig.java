@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  * @author nz.zou  2022/10/26
- * @since curr_situation_board1
+ * @since curr_situation_board
  */
 public class GlobalConfig {
     public static HashMap<String, String> currStatusMap = new HashMap<String, String>(){

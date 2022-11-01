@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.curr_situation_board.mapper.HourProgressMapper">
+<mapper namespace="com.example.curr_situation_board.mapper.RealtimeProgressMapper">
+    <select id="findDayProgress" resultType="com.example.curr_situation_board.vo.DayProgressVo">
+        SELECT iv1.STEP AS 'step', iv1.${building} AS 'plan' , iv2.${building} AS 'real_plan', iv3.${building} AS 'act'
+        FROM ioc_view iv1, ioc_view iv2, ioc_view iv3
+        WHERE iv1.`TYPE` = '目标' AND iv2.`TYPE` ='当前时间' AND iv2.TYPE2 ='计划'
+        AND iv3.`TYPE` = '当前时间' AND iv3.TYPE2 = '实绩'
+        AND iv1.STEP = iv2.STEP AND iv2.STEP = iv3.STEP;
+    </select>
+
+
+
     <select id="findHourProgressGy" resultType="com.example.curr_situation_board.vo.HourProgressVo">
         SELECT iv1.STEP AS 'step', iv1.${building} AS 'plan' , iv2.${building} AS 'real_plan', iv3.${building} AS 'act',
         (iv3.${building}-iv2.${building}) AS 'gap',iv4.${building} AS 'gy',iv5.${building} AS 'DAY',iv6.${building} AS 'sw',
@@ -71,5 +81,14 @@
         AND iv14.TYPE = 'S/W' AND iv14.TYPE2 = '21~22'
         AND iv1.STEP = iv2.STEP AND iv2.STEP = iv3.STEP AND iv3.STEP = iv4.STEP  AND iv4.STEP = iv5.STEP AND iv5.STEP = iv6.STEP AND iv6.STEP = iv7.				STEP AND iv7.STEP = iv8.STEP AND iv8.STEP = iv9.STEP AND iv9.STEP = iv10.STEP AND iv10.STEP = iv11.STEP AND iv11.STEP = iv12.STEP
         AND iv12.STEP = iv13.STEP AND iv13.STEP = iv14.STEP
+    </select>
+
+
+
+    <select id="findMonthProgress" resultType="com.example.curr_situation_board.vo.MonthProgressVo">
+        select `USAGE`,PLAN_M as plan,PLAN_M_MUBIAO as real_plan,ACT_M_MUBIAO as act,(ACT_M_MUBIAO - PLAN_M_MUBIAO) as gap
+        from daily_production
+        where (FAB = 'TOTAL' and `USAGE` = 'MNT' and TYPE = #{type}) or (FAB = 'TOTAL' AND `USAGE` = 'TV' and TYPE = #{type})
+        or (FAB = 'TOTAL' AND `USAGE` = 'TTL' and TYPE = #{type})
     </select>
 </mapper>

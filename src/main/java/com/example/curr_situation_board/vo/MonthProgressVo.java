@@ -2,7 +2,7 @@ package com.example.curr_situation_board.vo;
 
 /**
  * @author nz.zou  2022/10/26
- * @since curr_situation_board1
+ * @since curr_situation_board
  */
 public class MonthProgressVo {
     private int plan;
