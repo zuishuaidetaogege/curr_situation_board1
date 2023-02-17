@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.curr_situation_board.mapper.RealtimeProgressMapper">
+    <select id="findDayProgress" resultType="com.example.curr_situation_board.vo.DayProgressVO">
+        SELECT t1.step, t1.[plan], t2.real_plan,t3.act
+        FROM
+        ((      SELECT step AS 'step',[type] ,type2 ,${building} AS 'plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '目标'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t1
+        FULL OUTER JOIN
+        (       SELECT step AS 'step',[type] ,type2 ,${building} as 'real_plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '计划'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t2
+        ON t1.step=t2.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'act',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '实绩'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t3
+        ON t1.step = t3.step
+    </select>
+
+    <select id="findHourProgressGy" resultType="com.example.curr_situation_board.vo.HourProgressVO">
+        SELECT t1.step, t1.[plan], t2.real_plan,t3.act,t4.gap,t5.gy,t6.day,t7.sw,t8.h1,t9.h2,t10.h3,t11.h4,t12.h5,t13.h6,t14.h7,t15.h8
+        FROM
+        ((((((((((((((
+        SELECT step AS 'step',[type] ,type2 ,${building} AS 'plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '目标'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t1
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'real_plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '计划'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t2
+        ON t1.step=t2.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'act',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '实绩'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t3
+        ON t1.step = t3.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'gap',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '差异'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t4
+        ON t1.step = t4.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'gy',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t5
+        ON t1.step = t5.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'day',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t6
+        ON t1.step = t6.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'sw',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t7
+        ON t1.step = t7.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h1',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '22~23'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t8
+        ON t1.step = t8.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h2',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '23~00'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t9
+        ON t1.step = t9.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h3',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '00~01'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t10
+        ON t1.step = t10.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h4',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '01~02'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t11
+        ON t1.step = t11.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h5',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '02~03'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t12
+        ON t1.step = t12.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h6',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '03~04'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t13
+        ON t1.step = t13.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h7',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '04~05'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t14
+        ON t1.step = t14.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h8',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = '05~06'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t15
+        ON t1.step = t15.step
+    </select>
+
+    <select id="findHourProgressDay" resultType="com.example.curr_situation_board.vo.HourProgressVO">
+        SELECT t1.step, t1.[plan], t2.real_plan,t3.act,t4.gap,t5.gy,t6.day,t7.sw,t8.h1,t9.h2,t10.h3,t11.h4,t12.h5,t13.h6,t14.h7,t15.h8
+        FROM
+        ((((((((((((((
+        SELECT step AS 'step',[type] ,type2 ,${building} AS 'plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '目标'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t1
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'real_plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '计划'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t2
+        ON t1.step=t2.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'act',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '实绩'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t3
+        ON t1.step = t3.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'gap',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '差异'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t4
+        ON t1.step = t4.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'gy',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t5
+        ON t1.step = t5.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'day',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t6
+        ON t1.step = t6.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'sw',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t7
+        ON t1.step = t7.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h1',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '06~07'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t8
+        ON t1.step = t8.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h2',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '07~08'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t9
+        ON t1.step = t9.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h3',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '08~09'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t10
+        ON t1.step = t10.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h4',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '09~10'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t11
+        ON t1.step = t11.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h5',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '10~11'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t12
+        ON t1.step = t12.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h6',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '11~12'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t13
+        ON t1.step = t13.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h7',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '12~13'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t14
+        ON t1.step = t14.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h8',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = '13~14'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t15
+        ON t1.step = t15.step
+    </select>
+
+    <select id="findHourProgressSw" resultType="com.example.curr_situation_board.vo.HourProgressVO">
+        SELECT t1.step, t1.[plan], t2.real_plan,t3.act,t4.gap,t5.gy,t6.day,t7.sw,t8.h1,t9.h2,t10.h3,t11.h4,t12.h5,t13.h6,t14.h7,t15.h8
+        FROM
+        ((((((((((((((
+        SELECT step AS 'step',[type] ,type2 ,${building} AS 'plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '目标'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t1
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'real_plan',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '计划'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t2
+        ON t1.step=t2.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'act',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '实绩'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t3
+        ON t1.step = t3.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'gap',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = '当前时间' AND type2 = '差异'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t4
+        ON t1.step = t4.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'gy',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'G/Y' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t5
+        ON t1.step = t5.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'day',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'DAY' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t6
+        ON t1.step = t6.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'sw',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = 'ACT'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t7
+        ON t1.step = t7.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h1',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '14~15'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t8
+        ON t1.step = t8.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h2',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '15~16'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t9
+        ON t1.step = t9.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h3',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '16~17'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t10
+        ON t1.step = t10.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h4',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '17~18'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t11
+        ON t1.step = t11.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h5',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '18~19'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t12
+        ON t1.step = t12.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h6',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '19~20'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t13
+        ON t1.step = t13.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h7',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '20~21'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t14
+        ON t1.step = t14.step
+        )
+        FULL OUTER JOIN
+        (
+        SELECT step AS 'step',[type] ,type2 ,${building} as 'h8',updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = 'S/W' AND type2 = '21~22'
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ) AS t15
+        ON t1.step = t15.step
+
+    </select>
+
+    <select id="findMonthProgress" resultType="com.example.curr_situation_board.vo.MonthProgressVO">
+        select [usage],plan_m as [plan],plan_m_mubiao as real_plan,act_m_mubiao as act,(act_m_mubiao - plan_m_mubiao) as gap
+        from DW_M10_SHOW_IN_OUT_DATA
+        where (fab = 'TOTAL' and [usage] = 'MNT' and type = #{type}) or (fab = 'TOTAL' AND [usage] = 'TV' and type = #{type})
+        or (fab = 'TOTAL' AND [usage] = 'TTL' and type = #{type})
+    </select>
+</mapper>

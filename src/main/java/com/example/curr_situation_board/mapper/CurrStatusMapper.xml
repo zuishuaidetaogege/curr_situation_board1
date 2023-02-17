@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.curr_situation_board.mapper.CurrStatusMapper">
+<!--    <select id="findCurrStatus" resultType="com.example.curr_situation_board.vo.CurrStatusVO">-->
+<!--        select RW_TTL+W2_BANK as TTL,CP+CP_B_LINE+OLB as CP_OLB,-->
+<!--               SM020PG as PG,SM020BZ as BZ,MT+MT_RETEST as MT,LCM_PACK as L_PACK,-->
+<!--               LCM_BANK as L_BANK,W2_BANK,RW_TTL as RW-->
+<!--        from DW_CURRENTWIP_SUM-->
+<!--        where PROCESSID = #{building}-->
+<!--    </select>-->
+    <select id="findCurrStatus" resultType="com.example.curr_situation_board.vo.CurrStatusVO">
+        select MAIN_TOTAL+RW_TOTAL+BANK_TOTAL AS TTL,CP+CP_B_LINE+OLB AS CP_OLB,SM020PG AS PG,SM020BZ AS BZ,MT+MT_RETEST AS MT,LCM_PACK AS L_PACK,LCM_BANK AS L_BANK,W2_BANK,RW_TOTAL AS RW,SR016 AS TABALL
+        from
+        (select sum(CP) as CP, sum(CP_B_LINE) as CP_B_LINE, sum(OLB) as OLB,sum(SM020PG) as SM020PG, sum(SM020BZ) as SM020BZ,sum(MT) as MT,sum(MT_RETEST) as MT_RETEST, sum(LCM_PACK) as LCM_PACK, sum(LCM_BANK) as LCM_BANK,
+        sum(W2_BANK) as W2_BANK, sum(SR016) as SR016, sum(MAIN_TOTAL) as MAIN_TOTAL, sum(RW_TOTAL) as RW_TOTAL, sum(BANK_TOTAL) as BANK_TOTAL
+        FROM
+        (select top 14 *
+        from DW_CURRENTWIP_SUM as a
+        pivot
+        (
+        sum(qty) for
+        a.stepid in ([CP],[CP_B_LINE],[OLB],[SM020PG],[SM020BZ],[MT],[MT_RETEST],[LCM_PACK],[LCM_BANK],[W2_BANK],[SR016],[MAIN_TOTAL],[RW_TOTAL],[BANK_TOTAL])
+        ) as b
+        WHERE processid = #{building}
+        AND CONVERT (date, updatetime,102) =  CONVERT(date,GETDATE(),102)
+        ORDER BY updatetime DESC
+        ) AS c
+        ) AS d
+    </select>
+</mapper>

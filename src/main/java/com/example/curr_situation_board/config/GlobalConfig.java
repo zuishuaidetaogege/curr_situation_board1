@@ -1,0 +1,25 @@
+package com.example.curr_situation_board.config;
+
+import java.util.HashMap;
+
+/**
+ * @author nz.zou  2022/10/26
+ * @since curr_situation_board
+ */
+public class GlobalConfig {
+    public static HashMap<String, String> currStatusMap = new HashMap<String, String>(){
+        {
+            put("A", "MODPROC");
+            put("B", "MODPROC2");
+            put("C", "MODPROC3");
+        }
+    };
+    public static HashMap<String, String> realtimedayMap = new HashMap<String, String>(){
+        {
+            put("A", "s1mod");
+            put("B", "s2mod");
+            put("C", "s3mod");
+        }
+    };
+
+}
