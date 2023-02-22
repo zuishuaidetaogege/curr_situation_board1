@@ -5,10 +5,12 @@ import com.example.curr_situation_board.mapper.RealtimeProgressMapper;
 import com.example.curr_situation_board.service.RealtimeProgressService;
 import com.example.curr_situation_board.vo.DayProgressVO;
 import com.example.curr_situation_board.vo.HourProgressVO;
+import com.example.curr_situation_board.vo.HourScheduleVO;
 import com.example.curr_situation_board.vo.MonthProgressVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,5 +52,10 @@ public class RealtimeProgressServiceImpl implements RealtimeProgressService {
     public List<MonthProgressVO> findMonthProgress(String type){
         List<MonthProgressVO> list = realtimeProgressMapper.findMonthProgress(type);
         return list;
+    }
+
+    @Override
+    public List<HourScheduleVO> findHourProgress(String mod, String type, String date) {
+        return realtimeProgressMapper.findHourProgress(mod, type, date);
     }
 }

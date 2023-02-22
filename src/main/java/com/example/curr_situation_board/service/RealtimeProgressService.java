@@ -2,9 +2,11 @@ package com.example.curr_situation_board.service;
 
 import com.example.curr_situation_board.vo.DayProgressVO;
 import com.example.curr_situation_board.vo.HourProgressVO;
+import com.example.curr_situation_board.vo.HourScheduleVO;
 import com.example.curr_situation_board.vo.MonthProgressVO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,4 +52,6 @@ public interface RealtimeProgressService {
      * @return
      */
     List<MonthProgressVO> findMonthProgress(String type);
+
+    List<HourScheduleVO> findHourProgress(String mod, String type, String date);
 }

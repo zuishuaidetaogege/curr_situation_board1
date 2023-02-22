@@ -442,4 +442,14 @@
         where (fab = 'TOTAL' and [usage] = 'MNT' and type = #{type}) or (fab = 'TOTAL' AND [usage] = 'TV' and type = #{type})
         or (fab = 'TOTAL' AND [usage] = 'TTL' and type = #{type})
     </select>
+
+<!--    <resultMap id="HourMap" type="com.example.curr_situation_board.vo.HourScheduleVO">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property=""-->
+<!--    </resultMap>-->
+    <select id="findHourProgress" resultType="com.example.curr_situation_board.vo.HourScheduleVO">
+        SELECT step, type2 as time, ${mod} as qty, updatetime
+        FROM DW_IOC_VIEW_SUM
+        WHERE [type] = #{type} AND type2 LIKE '%~%' AND CONVERT (date, updatetime,102) =  #{date}
+    </select>
 </mapper>

@@ -2,10 +2,12 @@ package com.example.curr_situation_board.mapper;
 
 import com.example.curr_situation_board.vo.DayProgressVO;
 import com.example.curr_situation_board.vo.HourProgressVO;
+import com.example.curr_situation_board.vo.HourScheduleVO;
 import com.example.curr_situation_board.vo.MonthProgressVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,4 +55,6 @@ public interface RealtimeProgressMapper {
      * @return
      */
     List<MonthProgressVO> findMonthProgress(@Param("type") String type);
+
+    List<HourScheduleVO> findHourProgress(@Param("mod") String mod, @Param("type") String type,@Param("date") String date);
 }

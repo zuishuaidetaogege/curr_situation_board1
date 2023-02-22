@@ -3,12 +3,16 @@ package com.example.curr_situation_board.controller;
 import com.example.curr_situation_board.service.RealtimeProgressService;
 import com.example.curr_situation_board.vo.DayProgressVO;
 import com.example.curr_situation_board.vo.HourProgressVO;
+import com.example.curr_situation_board.vo.HourScheduleVO;
 import com.example.curr_situation_board.vo.MonthProgressVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,19 +25,19 @@ public class RealtimeProgressController {
     public RealtimeProgressService realtimeProgressService;
 
     @GetMapping("/realtime_progress_day/{building}")
-    public List<DayProgressVO> findDayProgress(@PathVariable String building){
+    public List<DayProgressVO> findDayProgress(@PathVariable String building) {
         List<DayProgressVO> list = realtimeProgressService.findDayProgress(building);
-        return list ;
+        return list;
     }
 
     @GetMapping("/realtime_progress_hour/{building}/{type}")
-    public List<HourProgressVO> findHourProgress(@PathVariable String building, @PathVariable String type){
+    public List<HourProgressVO> findHourProgress(@PathVariable String building, @PathVariable String type) {
         List<HourProgressVO> list = null;
-        if(type.equals("gy")){
+        if (type.equals("gy")) {
             list = realtimeProgressService.findHourProgressGy(building);
-        }else if(type.equals("day")){
+        } else if (type.equals("day")) {
             list = realtimeProgressService.findHourProgressDay(building);
-        }else if(type.equals("sw")){
+        } else if (type.equals("sw")) {
             list = realtimeProgressService.findHourProgressSw(building);
         }
         return list;
@@ -41,8 +45,19 @@ public class RealtimeProgressController {
 
 
     @GetMapping("/realtime_progress_month/{type}")
-    public List<MonthProgressVO> findMonthProgress(@PathVariable String type){
+    public List<MonthProgressVO> findMonthProgress(@PathVariable String type) {
         List<MonthProgressVO> list = realtimeProgressService.findMonthProgress(type);
         return list;
+    }
+
+    @GetMapping("/realtime_schedule_hour/{mod}/{type}")
+    public List<HourScheduleVO> findHourProgress(@PathVariable String mod, @PathVariable String type, String date) {
+        if(date == null){
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyPattern("yyyy-MM-dd");
+            LocalDate date1 = LocalDate.now();
+            date = String.valueOf(date1);
+        }
+        return realtimeProgressService.findHourProgress(mod, type, date);
     }
 }
